@@ -12,7 +12,7 @@ balance, and view suggested repayments.
 ## 2. Installation and Setup
 
 The submitted ZIP does not include `node_modules`. Extract the ZIP file, then
-open the project folder in VS Code using **File > Open Folder**. Run the
+open the project folder in VS Code. Run the
 following commands from the project root.
 
 GitHub cloning is optional. If you prefer to clone the repository instead:
