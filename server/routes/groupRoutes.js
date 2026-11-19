@@ -3,6 +3,7 @@ import { getGroupBalances } from '../controllers/balanceController.js'
 import { createExpense, deleteExpense, getGroupExpenses } from '../controllers/expenseController.js'
 import {
   createGroup,
+  deleteGroup,
   getGroupById,
   getGroups,
 } from '../controllers/groupController.js'
@@ -13,6 +14,7 @@ const router = Router()
 // Group list and detail routes
 router.get('/', getGroups)
 router.get('/:groupId', getGroupById)
+router.delete('/:groupId', deleteGroup)
 
 // Create a group with its initial member list
 router.post('/', createGroup)

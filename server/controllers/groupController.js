@@ -1,4 +1,5 @@
 import Group from '../models/Group.js'
+import Expense from '../models/Expense.js'
 
 // Validate MongoDB IDs before passing them to Mongoose queries.
 function isValidObjectId(id) {
@@ -40,6 +41,35 @@ async function getGroupById(request, response) {
     console.error('Failed to retrieve group:', error)
     return response.status(500).json({
       error: 'Unable to retrieve the group. Please try again.',
+    })
+  }
+}
+
+// Delete a group's expenses before removing the group to avoid orphaned records.
+async function deleteGroup(request, response) {
+  const { groupId } = request.params
+
+  if (!isValidObjectId(groupId)) {
+    return response.status(400).json({ error: 'A valid group ID is required.' })
+  }
+
+  try {
+    const group = await Group.findById(groupId)
+
+    if (!group) {
+      return response.status(404).json({ error: 'Group not found.' })
+    }
+
+    await Expense.deleteMany({ group: group._id })
+    await group.deleteOne()
+
+    return response.status(200).json({
+      message: 'Group and its expenses deleted successfully.',
+    })
+  } catch (error) {
+    console.error('Failed to delete group:', error)
+    return response.status(500).json({
+      error: 'Unable to delete the group. Please try again.',
     })
   }
 }
@@ -97,4 +127,4 @@ async function createGroup(request, response) {
   }
 }
 
-export { createGroup, getGroupById, getGroups }
+export { createGroup, deleteGroup, getGroupById, getGroups }

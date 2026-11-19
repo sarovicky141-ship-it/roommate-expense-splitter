@@ -29,6 +29,7 @@ function GroupsPage({ groupState }) {
             groups={groupState.groups}
             selectedGroupId={groupState.selectedGroup?._id || ''}
             onSelect={groupState.selectGroup}
+            onDelete={groupState.deleteSavedGroup}
           />
           <GroupDetails
             group={groupState.selectedGroup}

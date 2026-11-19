@@ -27,15 +27,29 @@
 }
 
 .group-option {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.45rem;
-  padding: 0.9rem 1rem;
+  box-sizing: border-box;
+  position: relative;
+  min-width: 0;
+  min-height: 8rem;
+  overflow: hidden;
   border: 1px solid #dfe5ec;
   border-radius: 9px;
   background: #fff;
   color: #17212b;
+}
+
+.group-option-select {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-height: 8rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.9rem 1rem 3rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -46,10 +60,48 @@
   background: #f7fcf8;
 }
 
+.group-option-select:focus-visible,
+.delete-group-button:focus-visible {
+  outline: 3px solid var(--color-primary-focus);
+  outline-offset: -3px;
+}
+
 .group-option.is-selected {
   border-color: var(--color-primary);
   background: var(--color-primary-light);
   box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.delete-group-button {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.45rem;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.delete-group-button:hover:not(:disabled) {
+  border-color: #f2c5ca;
+  background: #fff1f2;
+  color: #b42332;
+}
+
+.delete-group-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.delete-group-button svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .group-member-count {
@@ -118,6 +170,54 @@
 
 .group-created-date {
   margin: 0.9rem 0 0;
+}
+
+.delete-group-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(15 23 42 / 45%);
+}
+
+.delete-group-dialog {
+  width: min(100%, 30rem);
+  padding: 1.4rem;
+  border: 1px solid #dfe5ec;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgb(15 23 42 / 22%);
+}
+
+.delete-group-dialog h2 {
+  margin: 0 0 0.7rem;
+  font-size: 1.2rem;
+}
+
+.delete-group-dialog > p {
+  margin: 0;
+  color: #536273;
+  line-height: 1.5;
+}
+
+.delete-group-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.delete-group-confirm {
+  border-color: #dc3545;
+  background: #dc3545;
+  color: #fff;
+}
+
+.delete-group-confirm:hover:not(:disabled) {
+  border-color: #b42332;
+  background: #b42332;
 }
 
 @media (max-width: 480px) {

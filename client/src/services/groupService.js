@@ -17,4 +17,10 @@ function createGroup(group) {
   })
 }
 
-export { createGroup, getGroupById, getGroups }
+function deleteGroup(groupId) {
+  return sendRequest(`/groups/${groupId}`, {
+    method: 'DELETE',
+  })
+}
+
+export { createGroup, deleteGroup, getGroupById, getGroups }

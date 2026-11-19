@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   createGroup as saveGroup,
+  deleteGroup as removeGroup,
   getGroupById,
   getGroups,
 } from '../services/groupService'
@@ -75,6 +76,24 @@ function useGroups() {
     return result
   }
 
+  // Remove the group from local state only after the server confirms deletion.
+  async function deleteSavedGroup(groupId) {
+    await removeGroup(groupId)
+
+    selectionRequestId.current += 1
+    setGroups((currentGroups) =>
+      currentGroups.filter((group) => group._id !== groupId),
+    )
+    setSelectedGroup((currentGroup) =>
+      currentGroup?._id === groupId ? null : currentGroup,
+    )
+    setError('')
+
+    if (window.localStorage.getItem(SELECTED_GROUP_KEY) === groupId) {
+      window.localStorage.removeItem(SELECTED_GROUP_KEY)
+    }
+  }
+
   // Fetch fresh details when selection changes; ignore responses from older selections.
   async function selectGroup(groupId) {
     const group =
@@ -107,6 +126,7 @@ function useGroups() {
     loadingGroups,
     error,
     createNewGroup,
+    deleteSavedGroup,
     selectGroup,
   }
 }
