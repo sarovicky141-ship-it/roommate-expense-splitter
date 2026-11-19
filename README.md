@@ -1,223 +1,246 @@
 # Roommate Expense Splitter
 
-Stages 1 through 7 establish the React/Vite client, Express/Mongoose server,
-MongoDB connection, database models, group and expense creation, balance
-calculation, settlement suggestions, and expense listing and deletion.
+A small web app for groups to record shared expenses, see each member's
+balance, and view suggested repayments.
 
-## Requirements
+## 1. Requirements
 
 - Node.js 20.19+ or 22.12+
 - npm
-- MongoDB running locally, or a MongoDB connection URI
+- MongoDB (a local installation or a MongoDB connection URI)
 
-## Setup
+## 2. Installation and Setup
 
-From the project root, install each app's dependencies:
+The submitted ZIP does not include `node_modules`. Extract the ZIP file, then
+open the project folder in VS Code using **File > Open Folder**. Run the
+following commands from the project root.
+
+GitHub cloning is optional. If you prefer to clone the repository instead:
+
+```powershell
+git clone https://github.com/sarovicky141-ship-it/roommate-expense-splitter.git
+cd roommate-expense-splitter
+```
+
+### Step 1: Install backend dependencies
+
+```powershell
+cd server
+npm install
+cd ..
+```
+
+This installs the backend packages.
+
+### Step 2: Install frontend dependencies
 
 ```powershell
 cd client
 npm install
-cd ..\server
-npm install
 cd ..
+```
+
+This installs the frontend packages. Run `npm install` separately inside both
+the `server` and `client` folders.
+
+### Step 3: Configure environment variables
+
+The project includes a root `.env.example` file. From the project root, create
+`.env` from it:
+
+```powershell
 Copy-Item .env.example .env
 ```
 
-Set `MONGO_URI` in `.env` to your MongoDB connection string. Never commit
-`.env`; `.env.example` contains placeholders only.
+Before starting the backend, update `MONGO_URI` in `.env` with your MongoDB
+connection details. For a local MongoDB server, the settings can be:
 
-## Run
+```dotenv
+MONGO_URI=your_mangoDb_uri
+PORT=5000
+CLIENT_URL=http://localhost:5173
+```
 
-Start the backend in one terminal:
+`MONGO_URI` is required. `PORT` and `CLIENT_URL` are optional; they default to
+`5000` and `http://localhost:5173`. Do not commit credentials or your `.env`
+file. MongoDB must be running before you use database-backed features.
+
+The frontend optionally accepts `VITE_API_URL`. Its default is
+`http://localhost:5000/api`. To override it, set it in a client-side Vite env
+file such as `client/.env.local`.
+
+## 3. How to Run
+
+Run the backend and frontend in separate terminals.
+
+Backend:
 
 ```powershell
 cd server
 npm run dev
 ```
 
-Start the frontend in another terminal:
+Frontend:
 
 ```powershell
 cd client
 npm run dev
 ```
 
-Vite prints the frontend URL (normally `http://localhost:5173`). The API listens
-on port `5000` by default. `CLIENT_URL` controls the frontend origin allowed by
-CORS, and `PORT` controls the API port.
+Local URLs:
 
-## Dependencies
+- Backend: [http://localhost:5000](http://localhost:5000)
+- Frontend: [http://localhost:5173](http://localhost:5173)
 
-### Client
+## 4. Dependencies
 
-- `react` and `react-dom`: render the browser UI.
-- `react-router-dom`: navigate between the Groups and Expenses pages.
-- `vite`: development server and production bundler.
-- `@vitejs/plugin-react`: React support in Vite.
+**Frontend**
 
-### Server
+- React
+- React DOM
+- React Router DOM
+- Vite
+- `@vitejs/plugin-react`
 
-- `express`: HTTP server and REST routing.
-- `mongoose`: MongoDB connection and data modeling.
-- `dotenv`: load root `.env` settings.
-- `cors`: allow requests from the configured frontend origin.
+**Backend**
 
-## Frontend structure
+- Express
+- Mongoose
+- dotenv
+- cors
 
-- `src/components/`: reusable header, group, expense, dashboard, and common UI
-  components.
-- `src/pages/GroupsPage.jsx` and `src/pages/ExpensesPage.jsx`: compose the two
-  application pages.
-- `src/hooks/useGroups.js`: loads saved groups and manages the selected group.
-- `src/hooks/useExpenses.js`: loads and updates the selected group's dashboard.
-- `src/services/`: shared request handling and group/expense API functions.
-- `src/utils/currency.js`: formats paise as rupees and validates rupee input.
-- `src/utils/expenseCsv.js`: formats the selected group's expense and backend
-  balance data as two escaped CSV sections.
-- `src/App.jsx`: owns shared application state and routes; `/` redirects to
-  `/groups`.
+## 5. Features
 
-The shared header links to `/groups` and `/expenses`. The selected group ID is
-preserved in browser storage, so opening or refreshing `/expenses` restores the
-selected group while expense history, balances, and settlements are fetched
-again from the backend.
+- Create groups and add members.
+- Add expenses, choose one payer, and select the members sharing each expense.
+- View expense history and delete expenses.
+- Calculate each member's paid amount, share, and balance.
+- View suggested settlements and export expense and balance data as CSV.
+- Delete a group and its associated expenses.
+- Store groups and expenses in MongoDB.
 
-## API
+## 6. Project Structure
 
-| Method | Endpoint | Purpose |
+```text
+.
+├── client/
+│   ├── public/                 # Static images
+│   └── src/
+│       ├── components/         # Group, expense, dashboard, and shared UI
+│       ├── hooks/              # Group and expense state
+│       ├── pages/              # Groups and expenses pages
+│       ├── services/           # Frontend API requests
+│       └── utils/              # Currency and CSV helpers
+├── server/
+│   ├── config/                 # MongoDB connection
+│   ├── controllers/            # Group, expense, balance, and settlement logic
+│   ├── middleware/             # API error handling
+│   ├── models/                 # Mongoose Group and Expense models
+│   ├── routes/                 # API routes
+│   └── tests/                  # Automated settlement tests
+├── .env.example
+└── README.md
+```
+
+The client contains the React/Vite application. The server contains the
+Express API and MongoDB models.
+
+## 7. API Endpoints
+
+All endpoints are served from `http://localhost:5000`.
+
+| Method | Endpoint | Description | Route File | Controller File and Function |
+| --- | --- | --- | --- | --- |
+| GET | `/api/health` | Reports API and MongoDB connection status. | [healthRoutes.js](server/routes/healthRoutes.js) | Inline handler in [healthRoutes.js](server/routes/healthRoutes.js); no separate controller. |
+| GET | `/api/groups` | Lists saved groups. | [groupRoutes.js](server/routes/groupRoutes.js) | [groupController.js](server/controllers/groupController.js) — `getGroups` |
+| GET | `/api/groups/:groupId` | Returns one group and its members. | [groupRoutes.js](server/routes/groupRoutes.js) | [groupController.js](server/controllers/groupController.js) — `getGroupById` |
+| POST | `/api/groups` | Creates a group with at least two members. | [groupRoutes.js](server/routes/groupRoutes.js) | [groupController.js](server/controllers/groupController.js) — `createGroup` |
+| DELETE | `/api/groups/:groupId` | Deletes a group and its associated expenses. | [groupRoutes.js](server/routes/groupRoutes.js) | [groupController.js](server/controllers/groupController.js) — `deleteGroup` |
+| GET | `/api/groups/:groupId/expenses` | Lists a group's expenses. | [groupRoutes.js](server/routes/groupRoutes.js) | [expenseController.js](server/controllers/expenseController.js) — `getGroupExpenses` |
+| POST | `/api/groups/:groupId/expenses` | Adds an expense to a group. | [groupRoutes.js](server/routes/groupRoutes.js) | [expenseController.js](server/controllers/expenseController.js) — `createExpense` |
+| DELETE | `/api/groups/:groupId/expenses/:expenseId` | Deletes an expense from that group. | [groupRoutes.js](server/routes/groupRoutes.js) | [expenseController.js](server/controllers/expenseController.js) — `deleteExpense` |
+| GET | `/api/groups/:groupId/balances` | Calculates each member's paid amount, share, and balance. | [groupRoutes.js](server/routes/groupRoutes.js) | [balanceController.js](server/controllers/balanceController.js) — `getGroupBalances` |
+| GET | `/api/groups/:groupId/settlements` | Returns suggested payments between members. | [groupRoutes.js](server/routes/groupRoutes.js) | [settlementController.js](server/controllers/settlementController.js) — `getGroupSettlements` |
+
+Expense amounts sent to the API use integer paise. The frontend converts rupee
+amounts entered in the form to paise.
+
+## 8. Assumptions
+
+- A group needs a name and at least two members.
+- Each expense has one payer, and the payer must belong to the group.
+- At least one group member must be selected to share an expense. Selected
+  members must belong to the group.
+- Expenses are divided equally among the selected members.
+- Money is stored and calculated as integer paise. Any remaining paise are
+  assigned in the order of the `sharedAmong` list.
+- Deleting an expense recalculates balances and settlements from the remaining
+  expenses. Deleting a group also deletes its expenses.
+- MongoDB stores group and expense data.
+- Authentication is not included.
+
+## 9. Test Scenarios
+
+The following scenarios were used to check the main application features and
+validations.
+
+| Test Case | Steps | Expected Result |
 | --- | --- | --- |
-| GET | `/api/health` | Reports API/database status. Returns `200` when MongoDB is connected and `503` while it is disconnected. |
-| GET | `/api/groups` | Lists saved groups so the frontend can restore them after a page refresh. Returns `{ "groups": [...] }`. |
-| GET | `/api/groups/:groupId` | Returns one saved group and its members. Returns `400` for an invalid ID or `404` if the group does not exist. |
-| POST | `/api/groups` | Creates a group from a name and at least two named members. Returns `201` on success or `400` for invalid input. |
-| POST | `/api/groups/:groupId/expenses` | Creates an expense for an existing group. Returns `201`, `400` for invalid input/member IDs, or `404` if the group does not exist. |
-| GET | `/api/groups/:groupId/expenses` | Lists group expenses with payer and sharing-member names and IDs. Returns an empty array when the group has no expenses. |
-| DELETE | `/api/groups/:groupId/expenses/:expenseId` | Deletes the specified expense only if it belongs to the group. Returns `400` for invalid IDs and `404` if the group or expense is missing. |
-| GET | `/api/groups/:groupId/balances` | Returns each member's total paid, total share, and net balance in paise. Returns `400` for an invalid ID or `404` if the group does not exist. |
-| GET | `/api/groups/:groupId/settlements` | Returns suggested payments in integer paise. Returns `400` for an invalid ID or `404` if the group does not exist. |
+| Create a group | Enter a group name and at least two member names, then create it. | The group is created and appears in the group list. |
+| Add an expense | Enter an expense description and amount, select a payer and sharing members, then submit. | The expense is saved and appears in the group's expense history. |
+| Enter zero or a negative amount | Submit an expense with `0` or a negative amount. | The app rejects the amount; the API accepts only positive paise. |
+| Add an expense without a payer | Leave the payer unselected and submit. | The app displays an error and does not create the expense. |
+| View expense history | Open a group and navigate to its expense history. | The saved expenses are displayed with the correct details. |
+| Calculate member balances | Add expenses with different payers and sharing members, then view the balances. | Each member's paid amount, share, and net balance are calculated correctly. |
+| View settlement suggestions | Create expenses that result in members owing and receiving money. | The application displays the correct suggested payments between members. |
+| Delete an expense | Delete an existing expense from the expense history. | The expense is removed, and the balances and settlements are updated. |
+| Check data persistence | Restart the backend while using the same MongoDB database, then reload the app. | Saved groups and expenses remain available. |
 
-If MongoDB is unavailable, the API still listens so its health endpoint can
-report a degraded state; the connection failure is logged explicitly.
+## 10. Automated Tests
 
-The group endpoint expects JSON such as
-`{"name":"Flatmates","members":[{"name":"Ari"},{"name":"Bo"}]}`.
-`express.json()` parses the request body and makes that object available as
-`request.body` in the controller.
+Run the backend tests from the `server` folder:
 
-The client loads saved groups from `GET /api/groups` when the page opens. It
-stores only the selected group ID in browser storage; expense history, balances,
-and settlement suggestions are reloaded from the API for that group.
-
-The expense endpoint expects JSON such as:
-
-```json
-{
-  "description": "Groceries",
-  "amountPaise": 90000,
-  "paidBy": "memberId",
-  "sharedAmong": ["memberId1", "memberId2"]
-}
+```powershell
+cd server
+npm test
 ```
 
-Replace the example IDs with the group's actual ID in the URL and member IDs
-from the group's `members` array. The payer and every sharing member must
-belong to that group, and sharing member IDs must be unique.
+The tests use Node.js's built-in `node:test` and `node:assert` modules. They
+check a ₹500 debtor-to-creditor settlement and an expense shared only with its
+payer, which should require no settlement.
 
-The expense-list endpoint is a `GET` request with no body. A populated response
-looks like:
+## 11. Worked Example
 
-```json
-{
-  "groupId": "...",
-  "expenses": [
-    {
-      "expenseId": "...",
-      "description": "Groceries",
-      "amountPaise": 90000,
-      "paidBy": { "memberId": "...", "name": "Ari" },
-      "sharedAmong": [
-        { "memberId": "...", "name": "Ari" },
-        { "memberId": "...", "name": "Bo" }
-      ],
-      "createdAt": "..."
-    }
-  ]
-}
-```
+**Group members:** Ravi, Anu, Kiran
 
-For a group with no expenses, `expenses` is an empty array. Delete an expense
-with a `DELETE` request to
-`/api/groups/{groupId}/expenses/{expenseId}`; no request body is needed. A
-successful response is:
+**Expense 1**
 
-```json
-{
-  "message": "Expense deleted successfully.",
-  "expenseId": "..."
-}
-```
+- Description: Dinner
+- Amount: ₹900
+- Paid by: Ravi
+- Shared among: Ravi, Anu, Kiran
 
-Deletion removes only the expense whose ID and group ID both match. Balances
-and settlements are calculated from the remaining expenses, so they update
-automatically after deletion.
+**Expense 2**
 
-The balances endpoint returns all members, including members with no expenses.
-For each expense it divides `amountPaise` evenly among `sharedAmong` using
-integer division, then assigns any remainder paise in the stored member order.
-The response contains `totalPaidPaise`, `totalSharePaise`, and
-`netBalancePaise` for every member; net balance is total paid minus total share.
-For example, 10,000 paise shared by three members allocates 3,334, 3,333, and
-3,333 paise in `sharedAmong` order.
+- Description: Groceries
+- Amount: ₹600
+- Paid by: Anu
+- Shared among: Anu, Kiran
 
-The settlements endpoint uses those net balances. It matches debtors with
-creditors, adding payments from `from` to `to` for `amountPaise`, until their
-balances are settled. Members with zero balances are left out. A group with no
-expenses returns an empty `settlements` array. For example:
+| Member | Paid | Share | Net Balance |
+| --- | ---: | ---: | ---: |
+| Ravi | ₹900 | ₹300 | +₹600 |
+| Anu | ₹600 | ₹600 | ₹0 |
+| Kiran | ₹0 | ₹600 | -₹600 |
 
-```json
-{
-  "groupId": "...",
-  "groupName": "Flatmates",
-  "settlements": [
-    {
-      "from": { "memberId": "...", "name": "Bo" },
-      "to": { "memberId": "...", "name": "Ari" },
-      "amountPaise": 60000
-    }
-  ]
-}
-```
+**Settlement:** Kiran pays ₹600 to Ravi.
 
-Debtor amounts are converted to positive paise with `Math.abs()`. Each payment
-is the smaller of the remaining debtor amount and creditor amount
-(`Math.min()`), so neither party is overpaid.
+A positive balance means the member should receive money. A negative balance
+means the member owes money.
 
-## Database models
+## 12. Data Persistence
 
-- `Group` stores a trimmed group name and at least two embedded members.
-  Mongoose gives each member subdocument its own `_id`.
-- `Expense` stores the group ObjectId, description, positive integer paise
-  amount, payer member ID, sharing member IDs, and creation date. Its `group`
-  field references the `Group` model. Member IDs refer to embedded member
-  subdocuments and are checked against the group by the expense creation API.
-
-## Assumptions and future test scenarios
-
-- Groups require a non-empty name and at least two members.
-- Balance calculation splits each expense in integer paise. Any leftover
-  paise from an indivisible split is assigned one at a time in `sharedAmong`
-  order so the shares sum exactly to the expense total.
-- The expense payer must belong to the group, and only group members may share
-  an expense.
-- Expense payer and sharing-member IDs refer to embedded member subdocuments;
-  the expense API validates that they belong to the selected group.
-- The APIs validate group and expense creation requests. Deleting an expense
-  removes only that expense; balances and settlements recalculate from the
-  expenses that remain.
-
-## Implementation status
-
-The project includes initialization, MongoDB connection setup, configured
-CORS, error handling, Group and Expense schemas, group and expense APIs,
-balance and settlement calculations, and the frontend for managing saved
-groups, expenses, balances, and settlement suggestions.
+MongoDB stores groups and expenses. Saved information remains available after
+the backend restarts, provided it connects to the same database. The frontend
+stores the selected group ID in browser storage and reloads expense, balance,
+and settlement information from the backend.
