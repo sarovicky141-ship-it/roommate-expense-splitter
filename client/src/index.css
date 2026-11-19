@@ -1,0 +1,26 @@
+/* Global theme colors and base typography. */
+:root {
+  --color-primary: #16834a;
+  --color-primary-hover: #116c3d;
+  --color-primary-light: #eaf7ed;
+  --color-primary-border: #b9dfc5;
+  --color-primary-focus: rgb(22 131 74 / 20%);
+  font-family: Arial, sans-serif;
+  color: #17212b;
+  background: #f7f9fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Full-page layout reset for the React application root. */
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}

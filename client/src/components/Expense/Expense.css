@@ -1,0 +1,66 @@
+/* Expense, balance, and settlement lists share a card layout. */
+.expense-list,
+.balance-list,
+.settlement-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.expense-item,
+.balance-item,
+.settlement-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Card content and expense actions. */
+.expense-info h4,
+.balance-item h4,
+.settlement-item h4 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.expense-info p,
+.balance-item p {
+  margin: 0.25rem 0;
+  color: #64748b;
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.expense-info small,
+.settlement-item small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #64748b;
+}
+
+.expense-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.7rem;
+}
+
+.expense-actions strong {
+  font-size: 1.05rem;
+}
+
+/* Stack card details for narrow screens. */
+@media (max-width: 480px) {
+  .expense-item {
+    align-items: flex-start;
+  }
+
+  .expense-actions {
+    gap: 0.5rem;
+  }
+}

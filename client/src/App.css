@@ -1,0 +1,272 @@
+/* Main content width and reusable page panels. */
+.app {
+  width: min(100% - 2rem, 1100px);
+  margin: 0 auto;
+  padding: 0 0 2.5rem;
+}
+
+.app-section {
+  margin-top: 1.75rem;
+}
+
+.app-section-heading {
+  margin: 0 0 0.75rem;
+  color: #536273;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.panel {
+  margin-top: 1.25rem;
+  padding: clamp(1.1rem, 4vw, 1.75rem);
+  border: 1px solid #36f6a2;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(23 33 43 / 5%);
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-heading h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.section-heading p,
+.field-hint {
+  margin: 0;
+  color: #5b6876;
+  line-height: 1.5;
+}
+
+/* Numbered steps and form layout. */
+.step {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 2rem;
+  place-items: center;
+}
+
+.step-icon {
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+form > label,
+.members-heading h3,
+.shared-members legend {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+input[type='text'],
+select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #cbd4df;
+  border-radius: 7px;
+  background: #fff;
+  color: #17212b;
+  font: inherit;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--color-primary);
+  outline: 3px solid var(--color-primary-focus);
+}
+
+.members-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+}
+
+.members-heading h3 {
+  margin: 0;
+}
+
+.members-heading span {
+  color: #5b6876;
+  font-size: 0.82rem;
+}
+
+.member-inputs {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.member-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+}
+
+.button {
+  min-height: 2.65rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-primary-focus);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.button-secondary {
+  border-color: #cbd4df;
+  background: #fff;
+  color: #263648;
+}
+
+.button-secondary:hover:not(:disabled),
+.button-remove:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.button-remove {
+  border-color: #dfe5ec;
+  background: #fff;
+  color: #536273;
+}
+
+/* Form actions and member-sharing controls. */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+.field-hint {
+  margin-top: -0.25rem;
+  font-size: 0.82rem;
+}
+
+.shared-members {
+  min-width: 0;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.shared-members legend {
+  margin-bottom: 0.55rem;
+}
+
+.checkbox-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.checkbox-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.5rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid #dfe5ec;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.checkbox-option input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-primary);
+}
+
+/* Form feedback, empty states, and accessibility helpers. */
+.message {
+  margin: 0.35rem 0 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 7px;
+  line-height: 1.45;
+}
+
+.message-error {
+  border: 1px solid #f0c4c4;
+  background: #fff1f1;
+  color: #9c2525;
+}
+
+.message-success {
+  border: 1px solid #b9dfc5;
+  background: #effaf2;
+  color: #206338;
+}
+
+.empty-state {
+  padding: 1.2rem;
+  border: 1px dashed #cbd4df;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #64748b;
+  text-align: center;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 480px) {
+  .app {
+    width: min(100% - 1.25rem, 1100px);
+    padding-bottom: 1.75rem;
+  }
+
+  .member-input-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .button-remove {
+    justify-self: end;
+  }
+
+  .form-actions .button {
+    flex: 1 1 auto;
+  }
+}
