@@ -6,9 +6,7 @@ function isValidObjectId(id) {
   return typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id)
 }
 
-// ==========================================
 // EXPENSE CREATION
-// ==========================================
 async function createExpense(request, response) {
   const { groupId } = request.params
   const { description, amountPaise, paidBy, sharedAmong } = request.body || {}
@@ -54,6 +52,7 @@ async function createExpense(request, response) {
     const groupMemberIds = new Set(group.members.map((member) => member._id.toString()))
 
     // Payer and shared members must belong to this group, not just exist in MongoDB.
+    
     if (!groupMemberIds.has(paidBy.toLowerCase())) {
       return response.status(400).json({ error: 'The payer must be a member of this group.' })
     }
@@ -142,9 +141,7 @@ async function getGroupExpenses(request, response) {
   }
 }
 
-// ==========================================
 // EXPENSE DELETION
-// ==========================================
 async function deleteExpense(request, response) {
   const { groupId, expenseId } = request.params
 

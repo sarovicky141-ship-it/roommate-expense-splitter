@@ -6,9 +6,7 @@ import useExpenses from './hooks/useExpenses'
 import useGroups from './hooks/useGroups'
 import './App.css'
 
-// ==========================================
 // APPLICATION ROUTING AND SHARED STATE
-// ==========================================
 function App() {
   // Both pages use the same selected group and its current expense dashboard data.
   const groupState = useGroups()

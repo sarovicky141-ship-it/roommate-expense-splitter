@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
 
-// ==========================================
 // DATABASE CONNECTION
-// ==========================================
 async function connectDB() {
   const { MONGO_URI } = process.env
 

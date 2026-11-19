@@ -7,9 +7,7 @@ import {
   getGroupSettlements,
 } from '../services/expenseService'
 
-// ==========================================
 // SELECTED-GROUP EXPENSE DASHBOARD
-// ==========================================
 function useExpenses(groupId) {
   const [expenses, setExpenses] = useState([])
   const [balances, setBalances] = useState([])

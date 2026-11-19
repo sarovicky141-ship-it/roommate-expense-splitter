@@ -12,9 +12,7 @@ import BalanceSummary from './BalanceSummary'
 import SettlementList from './SettlementList'
 import './Dashboard.css'
 
-// ==========================================
 // GROUP EXPENSE DASHBOARD AND CSV EXPORT
-// ==========================================
 function ExpenseDashboard({
   group,
   expenses,

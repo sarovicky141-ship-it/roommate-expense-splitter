@@ -1,6 +1,4 @@
-// ==========================================
 // RUPEE FORMATTING AND INPUT CONVERSION
-// ==========================================
 function formatRupees(amountPaise) {
   return `₹${(amountPaise / 100).toLocaleString('en-IN', {
     minimumFractionDigits: 2,

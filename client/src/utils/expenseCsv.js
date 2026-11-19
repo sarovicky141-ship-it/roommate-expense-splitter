@@ -1,8 +1,6 @@
 import { formatRupees } from './currency'
 
-// ==========================================
 // CSV VALUE AND DISPLAY HELPERS
-// ==========================================
 function escapeCsvValue(value) {
   return `"${String(value ?? '').replace(/"/g, '""')}"`
 }
@@ -27,9 +25,7 @@ function formatBalance(amountPaise) {
   return `${sign}${formatRupees(Math.abs(amountPaise))}`
 }
 
-// ==========================================
 // EXPENSE AND BALANCE REPORT ROWS
-// ==========================================
 function buildExpenseCsv(expenses, balances) {
   if (!Array.isArray(expenses)) {
     throw new Error('Expense data is unavailable.')

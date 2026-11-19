@@ -8,9 +8,7 @@ import {
 
 const SELECTED_GROUP_KEY = 'roommate-expense-splitter-selected-group-id'
 
-// ==========================================
 // GROUP LOADING AND SELECTION
-// ==========================================
 function useGroups() {
   const [groups, setGroups] = useState([])
   const [selectedGroup, setSelectedGroup] = useState(null)

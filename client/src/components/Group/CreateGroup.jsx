@@ -2,9 +2,7 @@ import { useRef, useState } from 'react'
 import ErrorMessage from '../common/ErrorMessage'
 import './Group.css'
 
-// ==========================================
 // GROUP FORM AND MEMBER MANAGEMENT
-// ==========================================
 function CreateGroup({ onCreate }) {
   const [name, setName] = useState('')
   const [members, setMembers] = useState([

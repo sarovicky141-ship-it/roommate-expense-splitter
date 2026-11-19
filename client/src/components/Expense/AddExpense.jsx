@@ -3,9 +3,7 @@ import ErrorMessage from '../common/ErrorMessage'
 import { rupeesToPaise } from '../../utils/currency'
 import './Expense.css'
 
-// ==========================================
 // EXPENSE FORM AND MEMBER SHARING
-// ==========================================
 function AddExpense({ group, onCreate }) {
   const [description, setDescription] = useState('')
   const [amount, setAmount] = useState('')

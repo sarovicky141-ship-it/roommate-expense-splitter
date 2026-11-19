@@ -5,9 +5,8 @@ function isValidObjectId(id) {
   return typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id)
 }
 
-// ==========================================
 // GROUP BALANCE CALCULATION
-// ==========================================
+
 async function calculateGroupBalances(group) {
   const balances = group.members.map((member) => ({
     memberId: member._id.toString(),
@@ -73,9 +72,7 @@ async function calculateGroupBalances(group) {
   return balances
 }
 
-// ==========================================
 // BALANCE API
-// ==========================================
 async function getGroupBalances(request, response) {
   const { groupId } = request.params
 

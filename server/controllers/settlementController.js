@@ -5,9 +5,7 @@ function isValidObjectId(id) {
   return typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id)
 }
 
-// ==========================================
 // SETTLEMENT SUGGESTIONS
-// ==========================================
 async function getGroupSettlements(request, response) {
   const { groupId } = request.params
 

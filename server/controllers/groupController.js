@@ -6,9 +6,7 @@ function isValidObjectId(id) {
   return typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id)
 }
 
-// ==========================================
 // GROUP RETRIEVAL
-// ==========================================
 async function getGroups(_request, response) {
   try {
     const groups = await Group.find().sort({ _id: -1 })
@@ -74,9 +72,7 @@ async function deleteGroup(request, response) {
   }
 }
 
-// ==========================================
 // GROUP CREATION
-// ==========================================
 async function createGroup(request, response) {
   const { name, members } = request.body || {}
 
